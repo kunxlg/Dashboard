@@ -44,8 +44,14 @@ with st.sidebar:
 
 # Prepare Data
 df = pd.DataFrame(st.session_state.daily_data)
-df['date'] = pd.to_datetime(df['date'])
-df = df.sort_values(by='date')
+
+if not df.empty:
+    df['date'] = pd.to_datetime(df['date'])
+    df = df.sort_values(by='date')
+    df['month'] = df['date'].dt.to_period("M")
+else:
+    df = pd.DataFrame(columns=['date', 'pnl', 'month'])
+
 df['month'] = df['date'].dt.to_period("M")
 current_month = datetime.today().strftime("%Y-%m")
 
